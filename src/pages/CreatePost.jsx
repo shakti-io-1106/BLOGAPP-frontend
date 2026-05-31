@@ -58,7 +58,6 @@ const CreatePost = () => {
 
                 <textarea
                     name="content"
-                    rows="10"
                     placeholder="Write your post..."
                     value={formData.content}
                     onChange={handleChange}
