@@ -58,7 +58,7 @@ const Home = () => {
                                 {post.title}
                             </h2>
 
-                            <p className="text-gray-600 mt-2">
+                            <p className="text-gray-600 mt-2 overflow-hidden">
                                 {post.content.slice(0, 150)}
                                 {post.content.length > 150 && "..."}
                             </p>
