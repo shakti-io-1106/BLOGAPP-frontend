@@ -13,6 +13,8 @@ import Dashboard from "./pages/Dashboard";
 import EditPost from "./pages/EditPost";
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
+import PublicRoute from "./components/PublicRoute";
+
 
 function App() {
   return (
@@ -27,7 +29,10 @@ function App() {
 
         <Route
           path="/login"
-          element={<Login />}
+          element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>}
         />
 
         <Route
