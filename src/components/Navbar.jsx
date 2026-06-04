@@ -26,7 +26,11 @@ const Navbar = () => {
                     {user ? (
                         <>
                             <span>
-                                Hello, {user.username}
+                                Hello,
+                                <Link to={'/myaccount'}
+                                    className="text-blue-400 font-semibold">
+                                    {user.username}
+                                </Link>
                             </span>
                             <Link
                                 to="/dashboard"
