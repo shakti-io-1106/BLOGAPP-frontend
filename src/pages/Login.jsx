@@ -8,6 +8,7 @@ function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] =
         useState("");
+    const [loading, setLoading] = useState(false);
 
     const { login } =
         useContext(AuthContext);
@@ -16,7 +17,7 @@ function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        setLoading(true);
         try {
             const res = await API.post(
                 "/auth/login",
@@ -37,6 +38,8 @@ function Login() {
                 error.response?.data?.message ||
                 "Login failed"
             );
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -77,9 +80,10 @@ function Login() {
 
                     <button
                         type="submit"
+                        disabled={loading}
                         className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 active:scale-95 transition-all duration-200"
                     >
-                        Login
+                        {loading ? "Logging in..." : "Login"}
                     </button>
 
                     <p className="text-center text-sm text-slate-500 dark:text-slate-400">
