@@ -12,10 +12,11 @@ function Register() {
             email: "",
             password: "",
         });
+    const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        setLoading(true);
         try {
             await API.post(
                 "/auth/register",
@@ -28,6 +29,9 @@ function Register() {
                 error.response?.data?.message ||
                 "Registration failed"
             );
+        }
+        finally {
+            setLoading(false);
         }
     };
 
@@ -81,8 +85,10 @@ function Register() {
                         />
                     </div>
                     <button type="submit"
-                        className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 active:scale-95 transition-all duration-200">
-                        Register
+                        className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 active:scale-95 transition-all duration-200"
+                        disabled={loading}
+                    >
+                        {loading ? "Registering..." : "Register"}
                     </button>
                     <p
                         className="text-center text-sm text-slate-400"
