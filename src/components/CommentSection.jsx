@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { act, useState } from "react";
 import API from "../services/api";
 
 const CommentSection = ({
@@ -8,7 +8,8 @@ const CommentSection = ({
 }) => {
     const [content, setContent] =
         useState("");
-    const [comment, setComment] = useState(false);
+    const [action, setAction] = useState(null);
+    const [deletingId, setDeletingId] = useState(null);
 
     const token =
         localStorage.getItem("token");
@@ -19,7 +20,7 @@ const CommentSection = ({
 
     const submitComment = async (e) => {
         e.preventDefault();
-        setComment(true);
+        setAction("add");
 
         if (!content.trim()) return;
 
@@ -38,11 +39,12 @@ const CommentSection = ({
                 "Failed to add comment"
             );
         } finally {
-            setComment(false);
+            setAction(null);
         }
     };
 
     const deleteComment = async (commentId) => {
+        setDeletingId(commentId);
         try {
             await API.delete(
                 `/comments/delete/${commentId}`
@@ -51,6 +53,8 @@ const CommentSection = ({
             refreshComments();
         } catch (error) {
             console.error(error);
+        } finally {
+            setDeletingId(null);
         }
     };
 
@@ -75,11 +79,11 @@ const CommentSection = ({
                     />
 
                     <button
-                        disabled={comment}
-                        type="submit"
+                        disabled={action !== null}
+
                         className="mt-3 bg-blue-600 text-white px-4 py-2 rounded"
                     >
-                        {comment ? "Adding Comment..." : "Add Comment"}
+                        {action === "add" ? "Adding Comment..." : "Add Comment"}
                     </button>
                 </form>
             )}
@@ -96,10 +100,11 @@ const CommentSection = ({
                         <p>{comment.content}</p>
                         {currentUser?.id === comment.author._id && (
                             <button
+                                disabled={deletingId !== null}
                                 onClick={() => deleteComment(comment._id)}
                                 className="border rounded bg-red-500 text-white p-0.5 "
                             >
-                                Delete
+                                {deletingId === comment._id ? "Deleting" : "Delete"}
                             </button>
                         )}
                     </div>
