@@ -4,6 +4,7 @@ import API from "../services/api";
 
 const CreatePost = () => {
     const navigate = useNavigate();
+    const [publish, setPublish] = useState(false);
 
     const [formData, setFormData] =
         useState({
@@ -21,6 +22,7 @@ const CreatePost = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setPublish(true);
 
         try {
             await API.post(
@@ -34,6 +36,8 @@ const CreatePost = () => {
                 error.response?.data?.message ||
                 "Failed to create post"
             );
+        } finally {
+            setPublish(false);
         }
     };
 
@@ -65,10 +69,11 @@ const CreatePost = () => {
                 />
 
                 <button
+                    disabled={publish}
                     type="submit"
                     className="bg-blue-600 text-white px-6 py-3 rounded"
                 >
-                    Publish
+                    {publish ? "Publishing..." : "Publish"}
                 </button>
             </form>
         </div>
