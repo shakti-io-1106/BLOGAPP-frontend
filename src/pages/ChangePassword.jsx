@@ -10,9 +10,10 @@ const ChangePassword = () => {
         password: "",
         newPassword: ""
     })
+    const [change, setChange] = useState(false);
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        setChange(true);
         try {
             await API.put(`/account/updatepassword/${id}`, formData);
 
@@ -23,6 +24,8 @@ const ChangePassword = () => {
                 error.response?.data?.message ||
                 "Password Changing Failed"
             );
+        } finally {
+            setChange(false);
         }
     }
     return (
@@ -82,10 +85,11 @@ const ChangePassword = () => {
                 </div>
 
                 <button
+                    disabled={change}
                     type="submit"
                     className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 active:scale-95 transition-all duration-200"
                 >
-                    Change
+                    {change ? "Changing..." : "Change"}
                 </button>
             </form>
         </div>
