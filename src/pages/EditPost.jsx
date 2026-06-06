@@ -11,6 +11,7 @@ const EditPost = () => {
             title: "",
             content: "",
         });
+    const [update, setUpdate] = useState(false);
 
     useEffect(() => {
         fetchPost();
@@ -33,16 +34,19 @@ const EditPost = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        setUpdate(true);
         try {
             await API.put(
                 `/posts/${id}`,
                 formData
             );
 
+
             navigate("/dashboard");
         } catch (error) {
             alert("Failed to update post");
+        } finally {
+            setUpdate(false);
         }
     };
 
@@ -82,8 +86,9 @@ const EditPost = () => {
 
                 <button
                     className="bg-green-600 text-white px-6 py-3 rounded"
+                    disabled={update}
                 >
-                    Update Post
+                    {update ? "Updating..." : "Update Post"}
                 </button>
             </form>
         </div>
