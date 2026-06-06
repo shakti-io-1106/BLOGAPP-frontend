@@ -4,6 +4,7 @@ import API from "../services/api";
 
 const Dashboard = () => {
     const [posts, setPosts] = useState([]);
+    const [deletingId, setDeletingId] = useState(null);
     const user = JSON.parse(localStorage.getItem("user"));
 
     const fetchPosts = async () => {
@@ -26,6 +27,7 @@ const Dashboard = () => {
 
     const deletePost = async (id) => {
         if (!window.confirm("Delete this post?")) return;
+        setDeletingId(id);
 
         try {
             await API.delete(`/posts/${id}`);
@@ -33,6 +35,8 @@ const Dashboard = () => {
             setPosts(posts.filter((p) => p._id !== id));
         } catch (error) {
             alert("Failed to delete post");
+        } finally {
+            setDeletingId(null);
         }
     };
 
@@ -67,10 +71,11 @@ const Dashboard = () => {
                         </Link>
 
                         <button
+                            disabled={deletingId !== null}
                             onClick={() => deletePost(post._id)}
                             className="bg-red-600 text-white px-3 py-1 rounded"
                         >
-                            Delete
+                            {deletingId === post._id ? "Deleting Post..." : "Delete"}
                         </button>
                     </div>
                 </div>
