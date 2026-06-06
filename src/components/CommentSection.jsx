@@ -8,6 +8,7 @@ const CommentSection = ({
 }) => {
     const [content, setContent] =
         useState("");
+    const [comment, setComment] = useState(false);
 
     const token =
         localStorage.getItem("token");
@@ -18,6 +19,7 @@ const CommentSection = ({
 
     const submitComment = async (e) => {
         e.preventDefault();
+        setComment(true);
 
         if (!content.trim()) return;
 
@@ -35,6 +37,8 @@ const CommentSection = ({
                 error.response?.data?.message ||
                 "Failed to add comment"
             );
+        } finally {
+            setComment(false);
         }
     };
 
@@ -71,10 +75,11 @@ const CommentSection = ({
                     />
 
                     <button
+                        disabled={comment}
                         type="submit"
                         className="mt-3 bg-blue-600 text-white px-4 py-2 rounded"
                     >
-                        Add Comment
+                        {comment ? "Adding Comment..." : "Add Comment"}
                     </button>
                 </form>
             )}

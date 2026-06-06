@@ -54,6 +54,9 @@ const PostDetails = () => {
             <p className="text-gray-500 mb-6">
                 By {post.author.username}
             </p>
+            <div className="whitespace-pre-wrap mb-10">
+                {post.content}
+            </div>
             {isAuthor && (
                 <div className="mb-6">
                     <Link
@@ -65,9 +68,7 @@ const PostDetails = () => {
                 </div>
             )}
 
-            <div className="whitespace-pre-wrap mb-10">
-                {post.content}
-            </div>
+
 
             <hr className="mb-6" />
 
